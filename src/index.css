@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+@layer base {
+  :root {
+    --background: 30 30% 98%;
+    --foreground: 25 25% 18%;
+    --card: 30 25% 99%;
+    --card-foreground: 25 25% 18%;
+    --popover: 30 25% 99%;
+    --popover-foreground: 25 25% 18%;
+    --primary: 25 40% 58%;
+    --primary-foreground: 30 30% 98%;
+    --secondary: 25 20% 92%;
+    --secondary-foreground: 25 25% 25%;
+    --muted: 25 15% 90%;
+    --muted-foreground: 25 10% 45%;
+    --accent: 25 30% 88%;
+    --accent-foreground: 25 25% 18%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 25 20% 88%;
+    --input: 25 20% 88%;
+    --ring: 25 40% 58%;
+    --radius: 0.625rem;
+    --sidebar-background: 30 30% 98%;
+    --sidebar-foreground: 25 25% 25%;
+    --sidebar-primary: 25 40% 58%;
+    --sidebar-primary-foreground: 30 30% 98%;
+    --sidebar-accent: 25 20% 92%;
+    --sidebar-accent-foreground: 25 25% 25%;
+    --sidebar-border: 25 20% 88%;
+    --sidebar-ring: 25 40% 58%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-cream-50 text-nude-900 antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .gradient-nude {
+    background: linear-gradient(135deg, #FAF6F3 0%, #F5EDE6 50%, #EBD9CA 100%);
+  }
+  .gradient-hero {
+    background: linear-gradient(135deg, rgba(250, 246, 243, 0.95) 0%, rgba(245, 237, 230, 0.9) 50%, rgba(235, 217, 202, 0.85) 100%);
+  }
+  .glass-effect {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.8);
+  }
+  .hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -8px rgba(196, 138, 101, 0.25);
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F5EDE6;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D0A282;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #C48A65;
+}
+
+/* Selection color */
+::selection {
+  background: rgba(196, 138, 101, 0.3);
+  color: #654135;
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid #C48A65;
+  outline-offset: 2px;
+}
+
+/* Input autofill */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #FFFCF8 inset;
+  -webkit-text-fill-color: #654135;
+}
