@@ -117,7 +117,7 @@ export default function AdminComplaints() {
           updateResponse(editResponse,complain.id,response_id)
         })
 
-      navigate('/admin/complaints')
+      navigate('/admin/complaint')
 
 
 

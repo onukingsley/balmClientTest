@@ -32,6 +32,8 @@ import {
 } from '@/components/ui/sheet';
 import {cartStore, userStore} from "@/store/store.jsx";
 
+import Logo from '/src/assets/images/logo6.png'
+
 const navLinks = [
   { name: 'Home', href: '/' },
   { name: 'Shop', href: '/products' },
@@ -86,9 +88,15 @@ export default function Header() {
       <div className="w-full px-4 sm:px-6 lg:px-12 xl:px-20">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-1">
-            <span className="text-xl lg:text-2xl font-serif font-semibold text-nude-800">Next of</span>
-            <span className="text-xl lg:text-2xl font-serif font-light text-nude-500">Skin</span>
+          <Link to="/" className="flex pt-3 justify-center items-center gap-1">
+            {/*<span className="text-xl lg:text-2xl font-serif font-semibold text-nude-800">Next of</span>
+            <span className="text-xl lg:text-2xl font-serif font-light text-nude-500">Skin</span>*/}
+            <img
+                src= {Logo}
+                alt="logo"
+                className="w-20 h-20 object-cover bg-transparent"
+            />
+
           </Link>
 
           {/* Desktop Navigation */}
@@ -200,7 +208,8 @@ export default function Header() {
                 variant="ghost"
                 size="icon"
                 className="hidden sm:flex text-nude-700 hover:text-nude-500 hover:bg-nude-100"
-                onClick={() => navigate('/login')}
+                /*onClick={() => navigate('/login')}*/
+                onClick={() => alert("Coming Soon !!!!")}
               >
                 <User className="h-5 w-5" />
               </Button>
@@ -243,8 +252,15 @@ export default function Header() {
                   <div className="p-6 border-b border-nude-100">
                     <SheetHeader>
                       <SheetTitle className="text-left">
-                        <span className="font-serif text-2xl text-nude-800">Next of</span>
+
+                        <img
+                            src= {Logo}
+                            alt="logo"
+                            className="w-20 h-20 object-cover"
+                        />
+                        <span className="font-serif text-2xl text-nude-800">Next of </span>
                         <span className="font-serif text-2xl text-nude-500">Skin</span>
+
                       </SheetTitle>
                     </SheetHeader>
                   </div>
@@ -294,7 +310,7 @@ export default function Header() {
                           </Link>
 
                           <Link
-                              to="/account/complaints"
+                              to="/account/complaint"
                               onClick={() => setIsMobileMenuOpen(false)}
                               className="flex items-center gap-3 py-3 text-nude-700 hover:text-nude-500"
                           >
@@ -329,7 +345,8 @@ export default function Header() {
                           <Button
                               className="w-full bg-nude-500 hover:bg-nude-600 text-white"
                               onClick={() => {
-                                navigate('/login');
+                                /*navigate('/login');*/
+                                alert("Coming Soon !!!!")
                                 setIsMobileMenuOpen(false);
                               }}
                           >
@@ -339,7 +356,8 @@ export default function Header() {
                               variant="outline"
                               className="w-full border-nude-300 text-nude-700"
                               onClick={() => {
-                                navigate('/register');
+                                /*navigate('/register');*/
+                                 alert("Coming Soon !!!!");
                                 setIsMobileMenuOpen(false);
                               }}
                           >

@@ -206,8 +206,8 @@ export default function Products() {
           className="mb-4"
         />
         <div className="flex justify-between text-sm text-nude-600">
-          <span>${priceRange[0]}</span>
-          <span>${priceRange[1]}</span>
+          <span>₦{parseInt(priceRange[0]).toLocaleString()}</span>
+          <span>₦{parseInt(priceRange[1]).toLocaleString()}</span>
         </div>
       </div>
 
@@ -388,10 +388,10 @@ export default function Products() {
 
                       <div className="mt-auto flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <span className="text-lg font-semibold text-nude-800">${product.price}</span>
+                          <span className="text-lg font-semibold text-nude-800">₦{parseInt(product.price).toLocaleString()}</span>
                           {product.originalPrice && (
                             <span className="text-sm text-nude-400 line-through">
-                              ${product.originalPrice}
+                             ₦{parseInt(product.originalPrice).toLocaleString()}
                             </span>
                           )}
                         </div>

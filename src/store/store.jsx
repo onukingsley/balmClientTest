@@ -1,5 +1,16 @@
 import {create} from "zustand"
 
+
+
+export const loadingStore = create((set)=>{
+    return {
+        isLoading : false,
+        setIsLoading: (param)=>{
+            set({isLoading:param})
+        }
+    }
+})
+
 export const userStore = create((set)=>{
     return {
         user: JSON.parse(localStorage.getItem("User")) || null,
@@ -253,6 +264,16 @@ export const orderStore = create((set)=>{
             set({pendingOrders:pendingOrders})
         },
 
+        confirmedOrders: [],
+        setConfirmedOrders: (confirmedOrders)=>{
+            set({confirmedOrders:confirmedOrders})
+        },
+
+
+
+
+
+
         cancelledOrders: [],
         setCancelledOrders: (cancelledOrders)=>{
             set({cancelledOrders:cancelledOrders})
@@ -295,7 +316,30 @@ export const orderStore = create((set)=>{
                 }
             })
 
+
+
         },
+
+        updateConfirmedOrder: (id)=>{
+        set((state)=>{
+
+            /* dis-structure the array and get the selected order and the remaing order*/
+            const { [id]: selectedOrder, ...remainingPending } = state.pendingOrders;
+            console.log(selectedOrder)
+
+            const confirmedOrder = selectedOrder.map(item => ({
+                ...item,
+                status: 'confirmed',
+            }));
+
+            return {
+                confirmedOrders : {...state.confirmedOrders, [id]: confirmedOrder},
+                orders: {...state.orders, [id]:confirmedOrder},
+                pendingOrders : remainingPending
+            }
+        })
+
+    }
 
     }
 })
@@ -329,10 +373,25 @@ export const AdminOrderStore = create((set)=>{
         setAdminOrders:(orders)=>{
             set({adminOrders:orders})
         },
+        addAdminOrders:(order,key)=>{
+            set((state)=>{
+                console.log({[key]:order,...state.adminOrders})
+                return {
+                    adminOrders: {[key]:order,...state.adminOrders},
+                    adminPendingOrders: {[key]:order,...state.adminPendingOrders},
+
+                }
+            })
+        },
 
         adminPendingOrders: [],
         setAdminPendingOrders: (pendingOrders)=>{
             set({adminPendingOrders:pendingOrders})
+        },
+
+        adminConfirmedOrders: [],
+        setAdminConfirmedOrders: (confirmedOrders)=>{
+            set({adminConfirmedOrders:confirmedOrders})
         },
 
         adminCancelledOrders: [],
@@ -349,12 +408,39 @@ export const AdminOrderStore = create((set)=>{
 
                 /* dis-structure the array and get the selected order and the remaing order*/
                 const { [id]: selectedOrder, ...remainingPending } = state.adminPendingOrders;
-                console.log(remainingPending)
+                console.log(selectedOrder)
+
+                const confirmedOrder = selectedOrder.map(item => ({
+                    ...item,
+                    status: 'confirmed',
+                }));
 
                 return {
-                    adminDeliveredOrders : {...state.adminDeliveredOrders, [id]: selectedOrder},
+                    adminConfirmedOrders : {...state.adminConfirmedOrders, [id]: confirmedOrder},
 
                     adminPendingOrders : remainingPending
+                }
+            })
+
+        },
+
+        updateConfirmedOrder: (id)=>{
+            set((state)=>{
+
+                /* dis-structure the array and get the selected order and the remaing order*/
+                const { [id]: selectedOrder, ...remainingPending } = state.adminConfirmedOrders;
+                console.log(remainingPending)
+
+                const deliveredOrder = selectedOrder.map(item => ({
+                    ...item,
+                    status: 'delivered',
+                }));
+
+
+                return {
+                    adminDeliveredOrders : {...state.adminDeliveredOrders, [id]: deliveredOrder},
+
+                    adminConfirmedOrders : remainingPending
                 }
             })
 

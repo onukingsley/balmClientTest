@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
 import { Eye, EyeOff, User, Mail, Lock, Phone, MapPin, Camera } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {states} from "@/data/mockData.js";
@@ -30,7 +29,6 @@ export default function Register() {
   const [previewImage, setPreviewImage] = useState(null);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { register } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {

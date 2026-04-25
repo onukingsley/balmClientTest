@@ -231,12 +231,14 @@ export default function Cart() {
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between text-nude-600">
                   <span>Subtotal ({cart.length} items)</span>
-                  <span>${totalPrice.toFixed(2)}</span>
+                  <span>
+                    ₦{parseInt(totalPrice).toLocaleString()}
+                  </span>
                 </div>
                 {promoApplied && (
                   <div className="flex justify-between text-sage-600">
                     <span>Discount</span>
-                    <span>-${discount.toFixed(2)}</span>
+                    <span>-₦{discount.toFixed(2)}</span>
                   </div>
                 )}
                 <div className="flex justify-between text-nude-600">
@@ -251,7 +253,7 @@ export default function Cart() {
                 <div className="bg-sage-50 rounded-lg p-4 mb-6">
                   <div className="flex items-center gap-2 text-sage-700 text-sm">
                     <Truck className="h-4 w-4" />
-                    <span>Add ${(75 - totalPrice).toFixed(2)} more for free shipping!</span>
+                    <span>Add ₦{(75 - totalPrice).toFixed(2)} more for free shipping!</span>
                   </div>
                 </div>
               )}
@@ -260,7 +262,7 @@ export default function Cart() {
 
               <div className="flex justify-between text-lg font-semibold text-nude-900 mb-6">
                 <span>Total</span>
-                <span>${finalTotal.toFixed(2)}</span>
+                <span>₦{finalTotal.toFixed(2)}</span>
               </div>
 
               <Button

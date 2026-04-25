@@ -18,7 +18,7 @@ import {Alert} from "@/components/ui/alert.js";
 const statusColors = {
   pending: 'bg-amber-100 text-amber-700',
   processing: 'bg-blue-100 text-blue-700',
-  shipped: 'bg-purple-100 text-purple-700',
+  confirmed: 'bg-purple-100 text-purple-700',
   delivered: 'bg-sage-100 text-sage-700',
   cancelled: 'bg-rose-100 text-rose-700',
 };
@@ -26,7 +26,7 @@ const statusColors = {
 const statusLabels = {
   pending: 'Pending',
   processing: 'Processing',
-  shipped: 'Shipped',
+  confirmed: 'Confirmed',
   delivered: 'Delivered',
   cancelled: 'Cancelled',
 };
@@ -34,7 +34,7 @@ const statusLabels = {
 
 export default function Orders() {
 
-  const {orders,updateProcessingOrder,pendingOrders,cancelledOrders,deliveredOrders,setSelectedOrder} = orderStore()
+  const {orders,updateProcessingOrder,confirmedOrders,pendingOrders,cancelledOrders,deliveredOrders,setSelectedOrder} = orderStore()
   const {user} = userStore()
 
 
@@ -62,6 +62,9 @@ export default function Orders() {
       ord = deliveredOrders;
     } if (statusFilter === "cancelled"){
       ord = cancelledOrders
+    }
+    if (statusFilter === "confirmed"){
+      ord = confirmedOrders
     }
 
     let filteredArray = {}
@@ -167,7 +170,7 @@ export default function Orders() {
             <option value="all">All Status</option>
             {/*<option value="pending">Pending</option>*/}
             <option value="processing">Processing</option>
-           {/* <option value="shipped">Shipped</option>*/}
+            <option value="confirmed">Confirmed</option>
             <option value="delivered">Delivered</option>
             <option value="cancelled">Cancelled</option>
           </select>

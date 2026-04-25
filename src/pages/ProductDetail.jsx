@@ -195,12 +195,12 @@ export default function ProductDetail() {
 
             {/* Price */}
             <div className="flex items-center gap-4 mb-8">
-              <span className="text-3xl font-semibold text-nude-800">${prod?.price}</span>
+              <span className="text-3xl font-semibold text-nude-800">₦{parseInt(prod?.price).toLocaleString()}</span>
               {product.originalPrice && (
                 <>
-                  <span className="text-xl text-nude-400 line-through">${prod?.originalPrice}</span>
+                  <span className="text-xl text-nude-400 line-through">₦{parseInt(prod?.originalPrice).toLocaleString()}</span>
                   <Badge className="bg-rose-500 text-white">
-                    Save ${prod?.originalPrice - prod?.price}
+                    Save  ₦{prod?.originalPrice - prod?.price}
                   </Badge>
                 </>
               )}
@@ -271,7 +271,7 @@ export default function ProductDetail() {
             {/* Benefits */}
             <div className="grid grid-cols-3 gap-4 p-4 bg-white rounded-xl">
               {[
-                { icon: Truck, text: 'Free Shipping over $75' },
+                { icon: Truck, text: 'Free Shipping over ₦750' },
                 { icon: Shield, text: 'Secure Payment' },
                 { icon: RotateCcw, text: '30-Day Returns' },
               ].map((benefit) => (

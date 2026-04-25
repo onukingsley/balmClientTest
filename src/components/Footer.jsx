@@ -42,10 +42,10 @@ const socialLinks = [
 ];
 
 const benefits = [
-  { icon: Truck, title: 'Free Shipping', description: 'On orders over $75' },
+  { icon: Truck, title: 'Free Shipping', description: 'Orders around Oshodi' },
   { icon: Shield, title: 'Secure Payment', description: '100% secure checkout' },
-  { icon: RotateCcw, title: 'Easy Returns', description: '30-day return policy' },
-  { icon: CreditCard, title: 'Gift Cards', description: 'Give the gift of glow' },
+ /* { icon: RotateCcw, title: 'Easy Returns', description: '30-day return policy' },*/
+  { icon: CreditCard, title: 'Consultation', description: 'Consultation with a Dermatologist' },
 ];
 
 export default function Footer() {

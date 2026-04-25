@@ -96,11 +96,11 @@ export default function PendingOrders() {
     return matchesSearch && matchesStatus;
   });*/
 
-  const handleStatusUpdate = (orderId) => {
+  const handleStatusUpdate = (orderId,user_id) => {
     // In a real app, this would update the order status
       console.log(orderId)
 
-      axiosClient.post('/updateOrder',{order_id: orderId, status: 'delivered'})
+      axiosClient.post('/updateOrder',{user_id:user_id,order_id: orderId, status: 'confirmed'})
           .then(({data})=>{
             console.log(data, 'updated order')
             updateProcessingOrder(orderId)
@@ -237,9 +237,19 @@ export default function PendingOrders() {
                                       </div>
 
                                       {/* Payment Method */}
-                                      <div className="border-t border-nude-100 pt-4">
-                                        <p className="text-sm text-nude-500 mb-2">Payment Method</p>
-                                        <p className="text-nude-700">Paystack</p>
+                                      <div className="border-t flex pr-3 justify-between border-nude-100 pt-4">
+                                        <div>
+                                          <p className="text-sm text-nude-500 mb-2">Payment Method</p>
+                                          <p className="text-nude-700">Paystack</p>
+                                        </div>
+
+                                        <div>
+                                          <p className="text-sm text-nude-500 mb-2">TransactionID</p>
+                                          <p className="text-nude-700">{filteredOrder[key]?.[0]?.transaction_id}</p>
+                                        </div>
+
+
+
                                       </div>
 
                                       {/* User Details */}
@@ -285,7 +295,7 @@ export default function PendingOrders() {
 
                                   <AlertDialogDescription>
 
-                                      Confirm this order has been delivered
+                                      Confirm Payment has been made for this order
 
 
                                   </AlertDialogDescription>
@@ -294,7 +304,7 @@ export default function PendingOrders() {
                                     <AlertDialogCancel>
                                       No
                                     </AlertDialogCancel>
-                                    <AlertDialogAction onClick={()=>{handleStatusUpdate(key)}}>
+                                    <AlertDialogAction onClick={()=>{handleStatusUpdate(key,filteredOrder[key]?.[0]?.user?.id)}}>
                                       Confirm
                                     </AlertDialogAction>
                                   </AlertDialogFooter>

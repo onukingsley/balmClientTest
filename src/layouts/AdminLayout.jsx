@@ -9,11 +9,12 @@ import {
   BarChart3,
   MessageSquare,
   Users,
+    BookCheck,
   Book,
   LogOut,
   Menu,
   X,
-  ChevronRight, LogsIcon,
+  ChevronRight, LogsIcon, Loader2,
 } from 'lucide-react';
 import {useEffect, useState} from 'react';
 import { Button } from '@/components/ui/button';
@@ -22,15 +23,22 @@ import {
   adminComplaintStore,
   AdminOrderStore,
   adminRefund,
-  AdminUserStore,
+  AdminUserStore, loadingStore,
   productStore,
   userStore
 } from "@/store/store.jsx";
 import axiosClient from "@/service/axios_client.js";
+import Logo from "@/assets/images/logo6.png";
+import echo from "@/echo.js";
+import {toast} from "sonner";
+import {Toaster} from "@/components/ui/sonner.js";
+
+
 
 const adminLinks = [
   { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
   { name: 'Pending Orders', href: '/admin/pending-orders', icon: ShoppingBag },
+  { name: 'Confirmed Orders', href: '/admin/confirmed-orders', icon: BookCheck },
   { name: 'Delivered Orders', href: '/admin/delivered-orders', icon: CheckCircle },
   { name: 'Cancelled Orders', href: '/admin/cancelled', icon: RemoveFormatting },
   { name: 'Awaiting Refund', href: '/admin/awaitingRefund', icon: Recycle },
@@ -48,15 +56,55 @@ export default function AdminLayout() {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const {setAdminOrders,setTotalRevenue,setAwaitingRefund, setAdminCancelledOrders, setAdminDeliveredOrders, setAdminPendingOrders} = AdminOrderStore()
+  const {addAdminOrders,setAdminOrders,setTotalRevenue,setAwaitingRefund, setAdminCancelledOrders, setAdminDeliveredOrders, setAdminPendingOrders} = AdminOrderStore()
   const {setUsers} = AdminUserStore()
   const {setRefund} = adminRefund()
   const {setProduct,setCategory,setBrand} = productStore()
   const {setUserComplaint,setUserPendingComplaint} = adminComplaintStore()
 
+  const {isLoading, setIsLoading} = loadingStore()
 
-  useEffect(()=>{
+  const showToast = (title,message) => {
+    /*toast.success(message, {
+        duration: 2000,
+    })*/
+    toast.success(title, {
+      description: message,
+      duration: 5000,
+    })
+  }
 
+
+  useEffect(() => {
+    // Connection debugging
+    echo.connector.pusher.connection.bind('connected', () => {
+      console.log('✅ Connected to Reverb');
+    });
+
+    echo.connector.pusher.connection.bind('error', (error) => {
+      console.error('Connection error:', error);
+    });
+
+    // Subscribe to channel and listen for events
+    const channel = echo.channel('ord');
+
+    channel.listen('OrderPlaced', (data) => {
+      console.log('New order received:', data.order[0]);
+
+      showToast("New Order!!",`User ${data.order[0].user_id} just ordered. orderId: ${data.order[0].invoice_number}`)
+      addAdminOrders(data.order,data.order[0].invoice_number)
+      //alert(`User ${data.order.user_id} just ordered. orderId: ${data.order.invoice_number}`)
+    });
+
+    // Cleanup on unmount
+    return () => {
+      echo.leaveChannel('ord');
+    };
+  }, []);
+
+
+  /*useEffect(()=>{
+    setIsLoading(true)
     axiosClient.get('/getOverallAdmin')
         .then(({data})=>{
 
@@ -78,13 +126,17 @@ export default function AdminLayout() {
             setBrand(data.data.brand)
 
             console.log(data.data.brand)
+            setIsLoading(false)
 
 
           }
 
 
-    }).catch(e=>console.log(e))
-  },[user])
+    }).catch((e)=> {
+      console.log(e)
+      setIsLoading(false)
+    })
+  },[user])*/
 
 
 
@@ -92,6 +144,23 @@ export default function AdminLayout() {
     logoutUser();
     navigate('/login');
   };
+
+
+
+
+  if (isLoading) {
+    return (
+        <div className="flex flex-col items-center h-screen justify-center py-20">
+          <img
+              src= {Logo}
+              alt="logo"
+              className="w-[200px] h-[200px] object-cover bg-transparent"
+          />
+          <Loader2 className="h-12 w-12 text-nude-300 mb-4 animate-spin" />
+          <p className="text-nude-600">Loading...</p>
+        </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-cream-50 flex">
@@ -224,6 +293,7 @@ export default function AdminLayout() {
       {/* Main Content */}
       <main className="flex-1 lg:ml-64 pt-16 lg:pt-0">
         <div className="p-6 lg:p-8">
+          <Toaster position='top-right'/>
           <Outlet />
         </div>
       </main>

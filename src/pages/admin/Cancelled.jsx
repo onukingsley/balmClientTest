@@ -81,7 +81,7 @@ export default function Cancelled() {
                 </div>
                 <div className="bg-nude-100 rounded-xl px-6 py-3">
                     <p className="text-sm text-nude-600">Total Revenue</p>
-                    <p className="text-2xl font-semibold text-nude-900">${totalRevenue.toLocaleString()}</p>
+                    <p className="text-2xl font-semibold text-nude-900">₦{totalRevenue.toLocaleString()}</p>
                 </div>
             </div>
 

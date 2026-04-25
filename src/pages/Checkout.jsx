@@ -380,7 +380,7 @@ export default function Checkout() {
                     className="w-full bg-nude-500 hover:bg-nude-600 text-white py-6"
                     disabled={isProcessing}
                   >
-                    {isProcessing ? 'Processing...' : `Pay $${finalTotal.toFixed(2)}`}
+                    {isProcessing ? 'Processing...' : `Pay ₦${finalTotal.toFixed(2)}`}
                   </Button>
                 </form>
               </div>
@@ -421,7 +421,7 @@ export default function Checkout() {
                 <div className="flex justify-between text-nude-600">
                   <span>Shipping</span>
                   <span className={shipping === 0 ? 'text-sage-600' : ''}>
-                    {shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}
+                    {shipping === 0 ? 'Free' : `₦${shipping.toFixed(2)}`}
                   </span>
                 </div>
                 <div className="flex justify-between text-nude-600">
@@ -434,7 +434,7 @@ export default function Checkout() {
 
               <div className="flex justify-between text-lg font-semibold text-nude-900">
                 <span>Total</span>
-                <span>${finalTotal.toFixed(2)}</span>
+                <span>₦{finalTotal.toFixed(2)}</span>
               </div>
             </div>
           </div>

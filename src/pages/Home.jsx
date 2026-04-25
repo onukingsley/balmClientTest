@@ -1,18 +1,18 @@
 import { Link } from 'react-router-dom';
 import { products, categories, testimonials } from '../data/mockData';
-import { ArrowRight, Star, ShoppingBag, Heart, Check } from 'lucide-react';
+import {ArrowRight, Star, ShoppingBag, Heart, Check, Package} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import {cartStore, productStore, userStore} from "@/store/store.jsx";
+import {cartStore, loadingStore, productStore, userStore} from "@/store/store.jsx";
 import axiosClient from "@/service/axios_client.js";
 
 export default function Home() {
 
   const {user,logoutUser} = userStore()
   const {product,category,brand,discountProduct,recommendedProduct,limitedProduct} = productStore()
+  const {isLoading} = loadingStore()
 
-
-
+console.log(product)
 
   const {addCart,setTotalPrice} = cartStore()
 
@@ -43,6 +43,8 @@ export default function Home() {
 
 
 
+
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -58,7 +60,10 @@ export default function Home() {
 
         <div className="relative z-10 w-full px-4 sm:px-6 lg:px-12 xl:px-20 pt-20">
           <div className="max-w-2xl">
+{/*
             <Badge className="mb-4 bg-nude-200 text-nude-800 hover:bg-nude-200">
+*/}
+            <Badge className="mb-4 bg-[#e09132] text-nude-800 hover:bg-nude-200">
               New Collection 2025
             </Badge>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-serif font-medium text-nude-900 leading-tight mb-6">
@@ -73,7 +78,8 @@ export default function Home() {
               <Link to="/products">
                 <Button
                   size="lg"
-                  className="bg-nude-500 hover:bg-nude-600 text-white px-8 py-6 text-base font-medium group"
+                  /*className="bg-nude-500 hover:bg-nude-600 text-white px-8 py-6 text-base font-medium group"*/
+                  className="bg-[#e09132] hover:bg-nude-600 text-white px-8 py-6 text-base font-medium group"
                 >
                   Shop Now
                   <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
@@ -155,7 +161,8 @@ export default function Home() {
               </h2>
             </div>
             <Link to="/products" className="mt-4 lg:mt-0">
-              <Button variant="outline" className="border-nude-400 text-nude-700">
+              {/*<Button variant="outline" className="border-nude-400 text-nude-700">*/}
+              <Button variant="outline" className="bg-[#e09132] text-nude-100">
                 View All Products
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -339,9 +346,9 @@ export default function Home() {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="absolute -bottom-6 -right-6 bg-white p-6 rounded-xl shadow-soft max-w-xs">
-                <p className="font-serif text-3xl text-nude-800 mb-1">10+</p>
-                <p className="text-nude-600 text-sm">Years of crafting premium skincare</p>
+              <div className="absolute bg-[#e09132] -bottom-6 -right-6  p-6 rounded-xl shadow-soft max-w-xs">
+                <p className="font-serif text-3xl text-nude-100 mb-1">5+</p>
+                <p className="text-nude-200 text-sm">Years of crafting premium skincare</p>
               </div>
             </div>
 
@@ -365,7 +372,7 @@ export default function Home() {
 
               <div className="grid grid-cols-3 gap-6">
                 {[
-                  { value: '50K+', label: 'Happy Customers' },
+                  { value: '500+', label: 'Happy Customers' },
                   { value: '100%', label: 'Cruelty Free' },
                   { value: '4.9', label: 'Average Rating' },
                 ].map((stat) => (
@@ -383,50 +390,7 @@ export default function Home() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 lg:py-32 bg-white">
-        <div className="w-full px-4 sm:px-6 lg:px-12 xl:px-20">
-          <div className="text-center mb-16">
-            <span className="text-sm font-medium text-nude-500 tracking-widest uppercase">
-              Testimonials
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-medium text-nude-900 mt-3">
-              What Our Customers Say
-            </h2>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial) => (
-              <div
-                key={testimonial.id}
-                className="bg-cream-50 rounded-2xl p-8 hover:shadow-soft transition-shadow duration-300"
-              >
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`h-4 w-4 ${
-                        i < testimonial.rating ? 'fill-nude-400 text-nude-400' : 'text-nude-300'
-                      }`}
-                    />
-                  ))}
-                </div>
-                <p className="text-nude-700 leading-relaxed mb-6">"{testimonial.text}"</p>
-                <div className="flex items-center gap-4">
-                  <img
-                    src={testimonial.avatar}
-                    alt={testimonial.name}
-                    className="w-12 h-12 rounded-full object-cover"
-                  />
-                  <div>
-                    <h4 className="font-medium text-nude-900">{testimonial.name}</h4>
-                    <p className="text-nude-500 text-sm">{testimonial.product}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Newsletter */}
       <section id="contact" className="py-20 lg:py-32 bg-nude-900">
@@ -444,7 +408,8 @@ export default function Home() {
                 placeholder="Enter your email"
                 className="flex-1 px-6 py-4 bg-nude-800 border border-nude-700 rounded-xl text-white placeholder:text-nude-500 focus:outline-none focus:ring-2 focus:ring-nude-500"
               />
-              <Button className="bg-nude-500 hover:bg-nude-400 text-white px-8 py-4">
+              {/*<Button className="bg-nude-500 hover:bg-nude-400 text-white px-8 py-4">*/}
+              <Button className="bg-[#e09132] hover:bg-nude-400 text-white px-8 py-4">
                 Subscribe
               </Button>
             </form>

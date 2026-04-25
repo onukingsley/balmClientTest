@@ -77,7 +77,7 @@ export default function Brand() {
         const payLoad = {
             brand_id: productToDelete.id
         }
-
+        console.log(payLoad)
     axiosClient.post("/deleteBrand",payLoad)
         .then(({data})=>{
             console.log(data)

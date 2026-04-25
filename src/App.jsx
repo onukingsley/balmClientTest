@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-
 // Layouts
 import MainLayout from './layouts/MainLayout';
 import AdminLayout from './layouts/AdminLayout';
@@ -42,12 +41,119 @@ import EditCategory from "@/pages/admin/EditCategory.jsx";
 import Brand from "@/pages/admin/Brand.jsx";
 import AddBrand from "@/pages/admin/AddBrand.jsx";
 import EditBrand from "@/pages/admin/EditBrand.jsx";
+import {useEffect} from "react";
+import axiosClient from "@/service/axios_client.js";
+import {
+  adminComplaintStore,
+  AdminOrderStore, adminRefund, AdminUserStore,
+  cartStore,
+  complaintStore,
+  loadingStore,
+  orderStore,
+  productStore,
+  userStore
+} from "@/store/store.jsx";
+import echo from "@/echo.js";
+import ConfirmedOrders from "@/pages/admin/ConfirmedOrders.jsx";
 
 function App() {
+
+  const {setProduct,setBrand,setCategory,setLimitedProduct,setDiscountProduct,recommendedProduct,product,brand, category,discountProduct,setRecommendedProduct} = productStore()
+  const {user} = userStore()
+  const {setCart,setTotalPrice} = cartStore()
+  const {setOrders,setConfirmedOrders,setPendingOrders,setCancelledOrders,setDeliveredOrders} = orderStore()
+  const {setComplaint} = complaintStore()
+  const {setIsLoading,isLoading} = loadingStore()
+
+  const {setAdminOrders,setAdminConfirmedOrders,setTotalRevenue,setAwaitingRefund, setAdminCancelledOrders, setAdminDeliveredOrders, setAdminPendingOrders} = AdminOrderStore()
+  const {setUsers} = AdminUserStore()
+  const {setRefund} = adminRefund()
+  const {setUserComplaint,setUserPendingComplaint} = adminComplaintStore()
+
+
+
+    useEffect(()=>{
+    setIsLoading(true)
+    axiosClient.get('/getProduct')
+        .then(({data})=>{
+          setProduct(data.product)
+          setCategory(data.category)
+          setBrand(data.brand)
+
+          setDiscountProduct()
+          setRecommendedProduct()
+          setLimitedProduct()
+
+          setIsLoading(false)
+
+        }).catch(e=> {
+        alert('Error:' + e.message)
+        setIsLoading(false)
+    })
+    if (user){
+
+            setIsLoading(true)
+            axiosClient.get(`/getOverallIndex?user_id=${user.id}`)
+                .then(({data})=>{
+
+                    setCart(data.data.cart)
+                    setOrders(data.data.order)
+                    setCancelledOrders(data.data.cancelledOrder)
+                    setPendingOrders(data.data.PendingOrder)
+                    setConfirmedOrders(data.data.ConfirmedOrder)
+                    setDeliveredOrders(data.data.Delivered)
+                    setComplaint(data.data.complaint)
+                    setTotalPrice()
+
+                    setIsLoading(false)
+
+                }).catch((e)=> {
+                console.log(e)
+                setIsLoading(false)
+            })
+
+        if (user.user_role == 0){
+            setIsLoading(true)
+            axiosClient.get('/getOverallAdmin')
+                .then(({data})=>{
+
+                    console.log(data.data.orders)
+                    setAdminOrders(data.data.orders)
+                    setAdminPendingOrders(data.data.pendingOrder)
+                    setAdminDeliveredOrders(data.data.deliveredOrder)
+                    setAdminCancelledOrders(data.data.cancelledOrder)
+                    setAdminConfirmedOrders(data.data.confirmedOrder)
+
+                    setUsers(data.data.userManagement)
+                    setUserComplaint(data.data.allComplaint)
+                    setUserPendingComplaint(data.data.pendingComplaint)
+                    setRefund(data.data.awaitingRefund)
+                    console.log(data.data.totalRevenue)
+                    setTotalRevenue(data.data.totalRevenue)
+                    setAwaitingRefund(data.data.awaitingRefund)
+                    setProduct(data.data.products)
+                    setCategory(data.data.category)
+                    setBrand(data.data.brand)
+
+                    console.log(data.data.brand)
+                    setIsLoading(false)
+
+
+                })
+
+        }
+    }
+
+
+  },[user])
+
+
   return (
 
 
+
         <Router>
+
           <Routes>
             {/* Auth Routes */}
             <Route element={<AuthLayout />}>
@@ -79,6 +185,7 @@ function App() {
             <Route element={<AdminLayout />}>
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/admin/pending-orders" element={<PendingOrders />} />
+              <Route path="/admin/confirmed-orders" element={<ConfirmedOrders />} />
               <Route path="/admin/delivered-orders" element={<DeliveredOrders />} />
               <Route path="/admin/cancelled" element={<Cancelled />} />
               <Route path="/admin/awaitingRefund" element={<AwaitingRefund />} />

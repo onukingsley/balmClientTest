@@ -195,10 +195,10 @@ export default function ProductList() {
                     <span className="text-xs text-nude-500 uppercase">{product.category.title}</span>
                     <h3 className="font-medium text-nude-900 mt-1">{product.title}</h3>
                     <div className="flex items-center gap-2 mt-2">
-                      <span className="font-semibold text-nude-800">${product.price}</span>
+                      <span className="font-semibold text-nude-800">₦{parseInt(product.price).toLocaleString()}</span>
                       {product.originalPrice && (
                           <span className="text-sm text-nude-400 line-through">
-                    ${product.originalPrice}
+                    ₦{parseInt(product.originalPrice).toLocaleString()}
                   </span>
                       )}
                     </div>
