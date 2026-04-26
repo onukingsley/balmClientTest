@@ -97,11 +97,11 @@ export default function AwaitingRefund() {
        return matchesSearch && matchesStatus;
      });*/
 
-    const handleRefundUpdate = (orderId) => {
+    const handleRefundUpdate = (orderId,user_id) => {
         // In a real app, this would update the order status
         console.log(orderId)
 
-        axiosClient.post('/refundOrder',{order_id: orderId, refund: 0})
+        axiosClient.post('/refundOrder',{user_id:user_id,order_id: orderId, refund: 0})
             .then(({data})=>{
                 console.log(data, 'updated order')
                 updateRefundOrder(orderId)
@@ -300,7 +300,7 @@ export default function AwaitingRefund() {
                                                         </AlertDialogDescription>
                                                         <AlertDialogFooter>
                                                             <AlertDialogCancel>No</AlertDialogCancel>
-                                                            <AlertDialogAction onClick={() => handleRefundUpdate(key)}>
+                                                            <AlertDialogAction onClick={() => handleRefundUpdate(key,filteredOrder[key]?.[0]?.user?.id)}>
                                                                 Confirm Refund
                                                             </AlertDialogAction>
                                                         </AlertDialogFooter>

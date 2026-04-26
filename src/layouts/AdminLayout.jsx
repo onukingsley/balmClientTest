@@ -56,7 +56,7 @@ export default function AdminLayout() {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const {addAdminOrders,setAdminOrders,setTotalRevenue,setAwaitingRefund, setAdminCancelledOrders, setAdminDeliveredOrders, setAdminPendingOrders} = AdminOrderStore()
+  const {addAdminOrders,updateCancelOrder,setAdminOrders,setTotalRevenue,setAwaitingRefund, setAdminCancelledOrders, setAdminDeliveredOrders, setAdminPendingOrders} = AdminOrderStore()
   const {setUsers} = AdminUserStore()
   const {setRefund} = adminRefund()
   const {setProduct,setCategory,setBrand} = productStore()
@@ -70,7 +70,16 @@ export default function AdminLayout() {
     })*/
     toast.success(title, {
       description: message,
-      duration: 5000,
+      duration: 10000,
+    })
+  }
+  const showRedToast = (title,message) => {
+    /*toast.success(message, {
+        duration: 2000,
+    })*/
+    toast.error(title, {
+      description: message,
+      duration: 10000,
     })
   }
 
@@ -95,6 +104,13 @@ export default function AdminLayout() {
       addAdminOrders(data.order,data.order[0].invoice_number)
       //alert(`User ${data.order.user_id} just ordered. orderId: ${data.order.invoice_number}`)
     });
+
+    echo.channel('ordCancel')
+        .listen('OrderCanelled',(data)=>{
+          console.log('New order received:', data.order[0]);
+          updateCancelOrder(data.order[0].invoice_number)
+          showToast("OrderCancelled!!",`User ${data.order[0].user_id} has requested orderId: ${data.order[0].invoice_number} to be Cancelled`)
+        })
 
     // Cleanup on unmount
     return () => {

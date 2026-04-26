@@ -300,7 +300,7 @@ export const orderStore = create((set)=>{
             set((state)=>{
 
                 /* dis-structure the array and get the selected order and the remaing order*/
-                const { [id]: selectedOrder, ...remainingPending } = state.orders;
+                const { [id]: selectedOrder, ...remainingPending } = state.pendingOrders;
                 console.log(remainingPending)
 
                 const cancelledOrder = selectedOrder.map(item => ({
@@ -311,7 +311,7 @@ export const orderStore = create((set)=>{
 
                 return {
                     cancelledOrders : {...state.cancelledOrders, [id]: cancelledOrder},
-                    orders : {[id]:cancelledOrder ,...remainingPending},
+                    orders : {...state.orders, [id]: cancelledOrder },
                     pendingOrders : remainingPending
                 }
             })
@@ -339,7 +339,51 @@ export const orderStore = create((set)=>{
             }
         })
 
-    }
+    },
+
+
+        updateDeliveredOrder: (id)=>{
+            set((state)=>{
+
+                /* dis-structure the array and get the selected order and the remaing order*/
+                const { [id]: selectedOrder, ...remainingPending } = state.confirmedOrders;
+                console.log(selectedOrder)
+
+                const deliveredOrder = selectedOrder.map(item => ({
+                    ...item,
+                    status: 'delivered',
+                }));
+
+                return {
+                    deliveredOrders : {...state.deliveredOrders, [id]: deliveredOrder},
+                    orders: {...state.orders, [id]:deliveredOrder},
+                    confirmedOrders : remainingPending
+                }
+            })
+
+        },
+
+
+        updateRefund: (id)=>{
+            set((state)=>{
+
+                /* dis-structure the array and get the selected order and the remaing order*/
+                const { [id]: selectedOrder, ...remainingPending } = state.cancelledOrders;
+                console.log(remainingPending)
+
+                const cancelledOrder = selectedOrder.map(item => ({
+                    ...item,
+                    status: 'cancelled',
+                    refund: 0
+                }));
+
+                return {
+                    cancelledOrders : {...state.cancelledOrders, [id]: cancelledOrder},
+                    orders : {...state.orders, [id]: cancelledOrder },
+
+                }
+            })
+        }
 
     }
 })
@@ -441,6 +485,30 @@ export const AdminOrderStore = create((set)=>{
                     adminDeliveredOrders : {...state.adminDeliveredOrders, [id]: deliveredOrder},
 
                     adminConfirmedOrders : remainingPending
+                }
+            })
+
+        },
+
+
+        updateCancelOrder: (id)=>{
+            set((state)=>{
+
+                /* dis-structure the array and get the selected order and the remaing order*/
+                const { [id]: selectedOrder, ...remainingPending } = state.adminPendingOrders;
+                console.log(remainingPending)
+
+                const cancelledOrder = selectedOrder.map(item => ({
+                    ...item,
+                    status: 'cancelled',
+                }));
+
+
+                return {
+                    adminCancelledOrders : {...state.adminCancelledOrders, [id]: cancelledOrder},
+                    adminOrders : {...state.adminOrders, [id]: cancelledOrder},
+                    adminPendingOrders : remainingPending,
+                    awaitingRefund: {...state.awaitingRefund, [id]: cancelledOrder }
                 }
             })
 

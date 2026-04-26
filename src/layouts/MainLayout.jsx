@@ -18,7 +18,7 @@ export default function MainLayout() {
     const {setProduct,setBrand,setCategory,setLimitedProduct,setDiscountProduct,recommendedProduct,product,brand, category,discountProduct,setRecommendedProduct} = productStore()
     const {user} = userStore()
     const {setCart,setTotalPrice} = cartStore()
-    const {updateConfirmedOrder,updateProcessingOrder,setOrders,setPendingOrders,setCancelledOrders,setDeliveredOrders} = orderStore()
+    const {updateConfirmedOrder,updateRefund,updateDeliveredOrder,updateProcessingOrder,setOrders,setPendingOrders,setCancelledOrders,setDeliveredOrders} = orderStore()
     const {setComplaint} = complaintStore()
     const {setIsLoading,isLoading} = loadingStore()
 
@@ -55,6 +55,21 @@ export default function MainLayout() {
             showToast("Order Confirmed!!",`Your Order with orderId: ${data.order[0].invoice_number} has been confirmed`)
            //alert(`User ${data.order.user_id} just ordered. orderId: ${data.order.invoice_number}`)
         });
+
+        echo.channel(`ordDelivered${user.id}`)
+            .listen('OrderDelivered',(data)=>{
+                updateDeliveredOrder(data.order[0].invoice_number)
+                showToast('Order Delivered', `Order: ${data.order[0].invoice_number} has been delivered to ${data.order[0].delivery_address}`)
+            })
+
+        echo.channel(`ordRefund${user.id}`)
+            .listen('Refund',(data)=>{
+                updateRefund(data.order[0].invoice_number)
+                showToast('Order Refund', `Order: ${data.order[0].invoice_number} has been Refunded`)
+
+            })
+
+
 
         // Cleanup on unmount
         return () => {

@@ -12,7 +12,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
-import {AdminOrderStore, orderStore} from "@/store/store.jsx";
+import {AdminOrderStore, orderStore, userStore} from "@/store/store.jsx";
 import {
     AlertDialog, AlertDialogAction, AlertDialogCancel,
     AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
@@ -38,6 +38,7 @@ export default function ConfirmedOrders() {
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
     const [selectedOrder, setSelectedOrder] = useState(null);
+
 
     const {adminOrders,updateConfirmedOrder,adminConfirmedOrders} = AdminOrderStore()
 
@@ -96,11 +97,11 @@ export default function ConfirmedOrders() {
        return matchesSearch && matchesStatus;
      });*/
 
-    const handleStatusUpdate = (orderId) => {
+    const handleStatusUpdate = (orderId,user_id) => {
         // In a real app, this would update the order status
-        console.log(orderId)
+        console.log(orderId,user_id)
 
-        axiosClient.post('/updateOrder',{order_id: orderId, status: 'delivered'})
+        axiosClient.post('/updateOrder',{user_id:user_id ,order_id: orderId, status: 'delivered'})
             .then(({data})=>{
                 console.log(data, 'updated order')
                 updateConfirmedOrder(orderId)
@@ -294,7 +295,7 @@ export default function ConfirmedOrders() {
                                                             <AlertDialogCancel>
                                                                 No
                                                             </AlertDialogCancel>
-                                                            <AlertDialogAction onClick={()=>{handleStatusUpdate(key)}}>
+                                                            <AlertDialogAction onClick={()=>{handleStatusUpdate(key,filteredOrder[key]?.[0]?.user?.id)}}>
                                                                 Confirm
                                                             </AlertDialogAction>
                                                         </AlertDialogFooter>
