@@ -7,18 +7,12 @@ window.Pusher = Pusher;
 const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
 
 
-const echo = new Echo({
-    broadcaster: "reverb",
-    key: "nmxxqr1yolmyi1ma03xt",
-    wsHost: '192.168.0.90',
-    //wsHost: "127.0.0.1",
-    wsPort: 8080,
-    wssPort: 8080,
-    forceTLS: false,
-    enabledTransports: ["ws", "wss"], // ✅ prevents sockjs fallback
-    disableStats: true,
-    /*authEndpoint: null,*/
-    authEndpoint: '/broadcasting/auth',  // Make sure this exists
+/*const echo = new Echo({
+    broadcaster: "pusher",
+    key: "bc6945f1185c40d908cf",
+    cluster: 'eu',
+    forceTLS: true,
+    //authEndpoint: '/broadcasting/auth',  // Make sure this exists
 
     auth: {
         headers: {
@@ -29,14 +23,28 @@ const echo = new Echo({
         withCredentials: true,
     }
 
+});*/
+const echo = new Echo({
+    broadcaster: 'pusher',
+    key: 'bc6945f1185c40d908cf',
+    cluster: 'eu',
+    forceTLS: true,
+    encrypted: true,
+    // For debugging
+    enabledTransports: ['ws', 'wss'],
+    disabledTransports: [], // Don't disable any transports initially
 });
 
+
+
 // Test basic WebSocket connection
-const ws = new WebSocket(`ws://192.168.0.90:8080/app/nmxxqr1yolmyi1ma03xt`);
+/*
+const ws = new WebSocket(`wss://api.nextofskin.org/app/bc6945f1185c40d908cf`);
 ws.onopen = () => console.log('✅ WebSocket connected');
 ws.onerror = (err) => console.error('WebSocket error:', err);
 ws.onmessage = (msg) => console.log('Message:', msg);
 
+*/
 
 // Add connection debugging
 echo.connector.pusher.connection.bind('connected', () => {

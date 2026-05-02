@@ -208,8 +208,8 @@ export default function Header() {
                 variant="ghost"
                 size="icon"
                 className="hidden sm:flex text-nude-700 hover:text-nude-500 hover:bg-nude-100"
-                /*onClick={() => navigate('/login')}*/
-                onClick={() => alert("Coming Soon !!!!")}
+                onClick={() => navigate('/login')}
+                /*onClick={() => alert("Coming Soon !!!!")}*/
               >
                 <User className="h-5 w-5" />
               </Button>
@@ -345,8 +345,8 @@ export default function Header() {
                           <Button
                               className="w-full bg-nude-500 hover:bg-nude-600 text-white"
                               onClick={() => {
-                                /*navigate('/login');*/
-                                alert("Coming Soon !!!!")
+                                navigate('/login');
+                                /*alert("Coming Soon !!!!")*/
                                 setIsMobileMenuOpen(false);
                               }}
                           >
@@ -356,8 +356,8 @@ export default function Header() {
                               variant="outline"
                               className="w-full border-nude-300 text-nude-700"
                               onClick={() => {
-                                /*navigate('/register');*/
-                                 alert("Coming Soon !!!!");
+                                navigate('/register');
+                                 /*alert("Coming Soon !!!!");*/
                                 setIsMobileMenuOpen(false);
                               }}
                           >

@@ -3,6 +3,7 @@ import echo from "@/echo.js";
 
 const axiosClient = axios.create({
     //baseURL: 'https://api.balm.balm.name.ng/index.php/api/',
+    //baseURL: 'https://api.nextofskin.org/index.php/api/',
     baseURL: 'http://192.168.0.90:8000/api/',
     //baseURL: 'http://127.0.0.1:8000/api/',
     withCredentials: true

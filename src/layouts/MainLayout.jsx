@@ -44,9 +44,9 @@ export default function MainLayout() {
         echo.connector.pusher.connection.bind('error', (error) => {
             console.error('Connection error:', error);
         });
-        console.log(`ordConfirmed${user.id}`)
+        /*console.log(`ordConfirmed${user.id}`)*/
         // Subscribe to channel and listen for events
-        const channel = echo.channel(`ordConfirmed${user.id}`);
+        const channel = echo.channel(`ordConfirmed${user?.id}`);
 
 
         channel.listen('OrderConfirmed', (data) => {
@@ -56,13 +56,15 @@ export default function MainLayout() {
            //alert(`User ${data.order.user_id} just ordered. orderId: ${data.order.invoice_number}`)
         });
 
-        echo.channel(`ordDelivered${user.id}`)
+
+
+        echo.channel(`ordDelivered${user?.id}`)
             .listen('OrderDelivered',(data)=>{
                 updateDeliveredOrder(data.order[0].invoice_number)
                 showToast('Order Delivered', `Order: ${data.order[0].invoice_number} has been delivered to ${data.order[0].delivery_address}`)
             })
 
-        echo.channel(`ordRefund${user.id}`)
+        echo.channel(`ordRefund${user?.id}`)
             .listen('Refund',(data)=>{
                 updateRefund(data.order[0].invoice_number)
                 showToast('Order Refund', `Order: ${data.order[0].invoice_number} has been Refunded`)
